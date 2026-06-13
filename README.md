@@ -16,9 +16,9 @@ game levels.
 | Binary Search | Acorn Hunt | Live |
 | Bubble Sort | Class Photo | Live |
 | Selection Sort | Professor's Stack | Live |
-| Insertion Sort | TBD | Coming Soon |
-| Merge Sort | TBD | Coming Soon |
-| Quick Sort | TBD | Coming Soon |
+| Insertion Sort | Library Lineup | Live |
+| Merge Sort | Study Groups | Live |
+| Quick Sort | Debug the Grades | Live |
 
 ## How to Run
 
