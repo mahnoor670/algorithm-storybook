@@ -36,48 +36,40 @@ export default function SelectionSort() {
   const [wasOptimal, setWasOptimal] = useState(null);
   const [showLearn, setShowLearn] = useState(false);
 
-  const handleClick = (index) => {
+  const handleClick = async (index) => {
     if (won || index < sortedCount) return;
 
-    const unsorted = grades.slice(sortedCount);
-    const minVal = Math.min(...unsorted);
-    const minIndex = grades.indexOf(minVal, sortedCount);
-    const isOptimal = (grades[index] === minVal);
+    const response = await fetch('http://localhost:8080/selection-sort/pick', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        arr: [...grades],
+        picked_index: index,
+        sorted_count: sortedCount,
+        steps: steps
+      })
+    });
 
-    const newGrades = [...grades];
-    [newGrades[sortedCount], newGrades[index]] = [newGrades[index], newGrades[sortedCount]];
+    const data = await response.json();
 
-    const newSortedCount = sortedCount + 1;
-    const newSteps = steps + 1;
-setSteps(newSteps);
-setWasOptimal(isOptimal);
-setSelectedIndex(null);
+    setGrades(data.arr);
+    setSteps(data.steps);
+    setSortedCount(data.sorted_count);
+    setWasOptimal(data.optimal);
+    setSelectedIndex(null);
 
-if (isOptimal) {
-  const newGrades = [...grades];
-  [newGrades[sortedCount], newGrades[index]] = [newGrades[index], newGrades[sortedCount]];
-  const newSortedCount = sortedCount + 1;
-  setGrades(newGrades);
-  setSortedCount(newSortedCount);
-  setHint(`Correct! Grade ${grades[index]} was the lowest in the unsorted pile. Selection sort always picks the minimum and places it next!`);
-  if (newSortedCount === newGrades.length) {
-    setMessage(`📚 All done! The professor's exams are sorted in ${newSteps} steps!`);
-    setWon(true);
-    setHint(null);
-  } else {
-    setMessage(`Good! Now find the lowest grade in the remaining unsorted exams.`);
-  }
-} else {
-  setHint(`Not quite! Grade ${minVal} was the lowest in the unsorted pile. Selection sort scans the entire unsorted section to find the minimum each round.`);
-  setWasOptimal(false);
-  setMessage(`Try again! Find the lowest grade in the unsorted exams.`);
-}
+    if (data.optimal) {
+      setHint(`Correct! Grade ${grades[index]} was the lowest in the unsorted pile. Selection sort always picks the minimum and places it next!`);
+    } else {
+      setHint(`Not quite! Grade ${data.min_val} was the lowest in the unsorted pile. Selection sort scans the entire unsorted section to find the minimum each round.`);
+      setMessage(`Try again! Find the lowest grade in the unsorted exams.`);
+    }
 
-    if (newSortedCount === newGrades.length) {
-      setMessage(`📚 All done! The professor's exams are sorted in ${newSteps} steps!`);
+    if (data.done) {
+      setMessage(`📚 All done! The professor's exams are sorted in ${data.steps} steps!`);
       setWon(true);
       setHint(null);
-    } else {
+    } else if (data.optimal) {
       setMessage(`Good! Now find the lowest grade in the remaining unsorted exams.`);
     }
   };
@@ -130,18 +122,18 @@ if (isOptimal) {
         </div>
 
         {/* Message box */}
-<div style={{ display: "flex", justifyContent: "center", padding: "8px 20px", zIndex: 10, position: "relative" }}>
-  <div style={{
-    background: won ? "rgba(255,220,50,0.96)" : "rgba(255,255,255,0.93)",
-    borderRadius: "16px", padding: "14px 24px",
-    maxWidth: "680px", width: "100%", textAlign: "center",
-    boxShadow: "0 6px 24px rgba(0,0,0,0.25)", transition: "background 0.4s"
-  }}>
-    <p style={{ fontSize: "1.05rem", color: "#13294B", fontWeight: "bold", margin: 0, lineHeight: "1.6" }}>
-      {won ? message : "Help the professor sort the exams! Each round, find the lowest grade in the unsorted pile and click it!"}
-    </p>
-  </div>
-</div>
+        <div style={{ display: "flex", justifyContent: "center", padding: "8px 20px", zIndex: 10, position: "relative" }}>
+          <div style={{
+            background: won ? "rgba(255,220,50,0.96)" : "rgba(255,255,255,0.93)",
+            borderRadius: "16px", padding: "14px 24px",
+            maxWidth: "680px", width: "100%", textAlign: "center",
+            boxShadow: "0 6px 24px rgba(0,0,0,0.25)", transition: "background 0.4s"
+          }}>
+            <p style={{ fontSize: "1.05rem", color: "#13294B", fontWeight: "bold", margin: 0, lineHeight: "1.6" }}>
+              {message}
+            </p>
+          </div>
+        </div>
 
         {/* Hint box */}
         {hint && !won && (

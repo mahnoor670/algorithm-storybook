@@ -43,9 +43,8 @@ export default function BubbleSort() {
   const [wasOptimal, setWasOptimal] = useState(null);
   const [showLearn, setShowLearn] = useState(false);
 
-  const isSorted = (arr) => arr.every((v, i) => i === 0 || arr[i - 1] <= v);
 
-  const handleClick = (index) => {
+  const handleClick = async (index) => {
     if (won) return;
 
     if (selected === null) {
@@ -60,27 +59,33 @@ export default function BubbleSort() {
       return;
     }
 
-    const newStudents = [...students];
-    const needsSwap = newStudents[selected] > newStudents[index];
-    const optimal = needsSwap;
+    const response = await fetch('http://localhost:8080/bubble-sort/swap', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        arr: [...students],
+        index1: selected,
+        index2: index,
+        swaps: swaps
+      })
+    });
 
-    [newStudents[selected], newStudents[index]] = [newStudents[index], newStudents[selected]];
-    const newSwaps = swaps + 1;
+    const data = await response.json();
 
-    setStudents(newStudents);
-    setSwaps(newSwaps);
+    setStudents(data.arr);
+    setSwaps(data.swaps);
     setSelected(null);
     setLastSwap([selected, index]);
-    setWasOptimal(optimal);
+    setWasOptimal(data.optimal);
 
-    if (optimal) {
-      setHint(`Good swap! Student with height ${newStudents[index]} and ${newStudents[selected]} were out of order. Bubble sort always fixes the biggest problems first!`);
+    if (data.optimal) {
+      setHint(`Good swap! Bubble sort always fixes neighbors that are out of order!`);
     } else {
-      setHint(`That swap wasn't needed, as those two were already in order! Bubble sort only swaps when the left neighbor is bigger than the right!`);
+      setHint(`That swap wasn't needed — those two were already in order!`);
     }
 
-    if (isSorted(newStudents)) {
-      setMessage(`📸 Great! The class photo is ready! You sorted everyone in ${newSwaps} swaps!`);
+    if (data.sorted) {
+      setMessage(`📸 Great! The class photo is ready! You sorted everyone in ${data.swaps} swaps!`);
       setWon(true);
       setHint(null);
     } else {
