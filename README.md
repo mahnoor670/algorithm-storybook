@@ -2,7 +2,7 @@
 
 A full-stack educational web application that teaches sorting and searching algorithms to introductory CS learners through interactive, story-driven game levels.
 
-🌐 **Live Demo:** https://algorithm-storybook-9dfh.vercel.app
+**Live Demo:** https://algorithm-storybook-9dfh.vercel.app
 
 ## Tech Stack
 - **Frontend:** React, JavaScript, HTML/CSS
