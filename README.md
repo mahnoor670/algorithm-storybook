@@ -1,9 +1,8 @@
 # Algorithm Storybook
 
-A full-stack educational web application that teaches sorting 
-and searching algorithms to high school students and 
-introductory CS learners through interactive, story-driven 
-game levels.
+A full-stack educational web application that teaches sorting and searching algorithms to introductory CS learners through interactive, story-driven game levels.
+
+🌐 **Live Demo:** https://algorithm-storybook-9dfh.vercel.app
 
 ## Tech Stack
 - **Frontend:** React, JavaScript, HTML/CSS
@@ -11,6 +10,7 @@ game levels.
 - **Architecture:** REST API
 
 ## Algorithms
+
 | Algorithm | Level | Status |
 |-----------|-------|--------|
 | Binary Search | Acorn Hunt | Live |
@@ -34,5 +34,3 @@ cd client
 npm install
 npm start
 ```
-
-App runs at https://algorithm-storybook.onrender.com
