@@ -39,7 +39,7 @@ export default function SelectionSort() {
   const handleClick = async (index) => {
     if (won || index < sortedCount) return;
 
-    const response = await fetch('http://localhost:8080/selection-sort/pick', {
+    const response = await fetch('http://https://algorithm-storybook.onrender.com:8080/selection-sort/pick', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

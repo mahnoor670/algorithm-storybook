@@ -59,7 +59,7 @@ export default function BubbleSort() {
       return;
     }
 
-    const response = await fetch('http://localhost:8080/bubble-sort/swap', {
+    const response = await fetch('http://https://algorithm-storybook.onrender.com:8080/bubble-sort/swap', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

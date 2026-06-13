@@ -55,7 +55,7 @@ export default function QuickSort() {
   const handleAssign = async (side) => {
     if (selectedIndex === null || won) return;
 
-    const response = await fetch('http://localhost:8080/quick-sort/assign', {
+    const response = await fetch('http://https://algorithm-storybook.onrender.com:8080/quick-sort/assign', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

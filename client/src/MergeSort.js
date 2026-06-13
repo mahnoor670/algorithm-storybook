@@ -45,7 +45,7 @@ export default function MergeSort() {
     if (side === 'left' && left.length === 0) return;
     if (side === 'right' && right.length === 0) return;
 
-    const response = await fetch('http://localhost:8080/merge-sort/pick', {
+    const response = await fetch('http://https://algorithm-storybook.onrender.com:8080/merge-sort/pick', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

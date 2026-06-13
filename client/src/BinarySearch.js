@@ -48,7 +48,7 @@ export default function BinarySearch() {
   const [wasOptimal, setWasOptimal] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8080/start")
+    fetch("http://https://algorithm-storybook.onrender.com:8080/start")
       .then(res => res.json())
       .then(data => setSecret(data.secret));
   }, []);
@@ -61,7 +61,7 @@ export default function BinarySearch() {
     await new Promise(r => setTimeout(r, 800));
     setIsMoving(false);
 
-    const res = await fetch("http://localhost:8080/guess", {
+    const res = await fetch("http://https://algorithm-storybook.onrender.com:8080/guess", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ hole, secret, low, high, steps })
@@ -99,7 +99,7 @@ export default function BinarySearch() {
     setSquirrelPos(42); setSquirrelAnim("bounce"); setIsMoving(false);
     setOptimalPick(null); setWasOptimal(null);
     setMessage("Help the squirrel find the golden acorn hidden on the Quad!");
-    fetch("http://localhost:8080/start")
+    fetch("http://https://algorithm-storybook.onrender.com:8080/start")
       .then(res => res.json())
       .then(data => setSecret(data.secret));
   };
