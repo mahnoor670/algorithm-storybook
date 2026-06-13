@@ -11,7 +11,7 @@ const levels = [
   },
   {
     id: "bubble-sort",
-    emoji: "🎓",
+    emoji: "📸",
     title: "Class Photo",
     algorithm: "Bubble Sort",
     description: "The students are all mixed up for the class photo! Swap neighbors to sort them by height and learn how bubble sort works.",
@@ -19,20 +19,39 @@ const levels = [
   },
   {
     id: "selection-sort",
-    emoji: "🔍",
+    emoji: "👨‍🏫",
     title: "Professor's Stack",
     algorithm: "Selection Sort",
     description: "The professor's exams are all mixed up! Find the lowest grade each round and sort the stack.",
     available: true
   },
+
   {
-    id: "linear-search",
+    id: "insertion-sort",
     emoji: "📚",
-    title: "Coming Soon",
-    algorithm: "Linear Search",
-    description: "Another search challenge is coming!",
-    available: false
+    title: "Libray Lineup",
+    algorithm: "Insertion Sort",
+    description: "The library books are all out of order! Insert each book into the correct spot on the shelf and learn how insertion sort works.",
+    available: true
+  }, 
+  {
+    id: "merge-sort",
+    emoji: "📝",
+    title: "Study Groups",
+    algorithm: "Merge Sort",
+    description: "Two study groups finished reviewing separately. Help them merge into one sorted group for the final exam!",
+    available: true
+  },
+  {
+    id: "quick-sort",
+    emoji: "💻",
+    title: "Debug the Grades",
+    algorithm: "Quick Sort",
+    description: "The TA needs to rank coding assignments! Pick a pivot score to split submissions into lower and higher piles until everything is sorted.",
+    available: true
   }
+
+
 ];
 
 export default function Menu() {

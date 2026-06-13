@@ -97,7 +97,10 @@ export default function SelectionSort() {
         {/* Background */}
         <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-          background: "linear-gradient(160deg, #2c3e50 0%, #3498db 100%)",
+          backgroundImage: "url('/exam.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.5)",
           zIndex: 0
         }} />
 
@@ -178,7 +181,7 @@ export default function SelectionSort() {
                     width: "70px", height: "90px",
                     background: isSorted
                       ? "linear-gradient(135deg, #2ecc71, #27ae60)"
-                      : "linear-gradient(135deg, #FF5F05, #cc4400)",
+                      : "linear-gradient(135deg, #5dade2, #2e86c1)",
                     borderRadius: "8px",
                     display: "flex", flexDirection: "column",
                     alignItems: "center", justifyContent: "center",

@@ -80,5 +80,154 @@ def selection_pick():
         "done": sorted_count == len(arr)
     })
 
+@app.route('/insertion-sort/insert', methods=['POST'])
+def insertion_insert():
+    data = request.json
+    arr = data.get('arr')
+    sorted_count = int(data.get('sorted_count'))
+    insert_position = int(data.get('insert_position'))
+    steps = int(data.get('steps', 0)) + 1
+    
+    current_book = arr[sorted_count]
+    sorted_section = arr[:sorted_count]
+    
+    correct_position = sorted_count
+    for i, val in enumerate(sorted_section):
+        if current_book < val:
+            correct_position = i
+            break
+    
+    is_optimal = (insert_position == correct_position)
+    
+    if is_optimal:
+        arr.pop(sorted_count)
+        arr.insert(insert_position, current_book)
+        sorted_count += 1
+    
+    return jsonify({
+        "arr": arr,
+        "steps": steps,
+        "optimal": is_optimal,
+        "sorted_count": sorted_count,
+        "correct_position": correct_position,
+        "done": sorted_count == len(arr)
+    })
+
+
+@app.route('/merge-sort/pick', methods=['POST'])
+def merge_pick():
+    data = request.json
+    left = data.get('left')
+    right = data.get('right')
+    merged = data.get('merged')
+    picked_side = data.get('picked_side')
+    steps = int(data.get('steps', 0)) + 1
+
+    if not left and not right:
+        return jsonify({"error": "Both groups empty"}), 400
+
+    if not left:
+        correct_side = 'right'
+        correct_value = right[0]
+    elif not right:
+        correct_side = 'left'
+        correct_value = left[0]
+    elif left[0] <= right[0]:
+        correct_side = 'left'
+        correct_value = left[0]
+    else:
+        correct_side = 'right'
+        correct_value = right[0]
+
+    is_optimal = (picked_side == correct_side)
+    picked_value = left[0] if picked_side == 'left' else right[0]
+
+    if is_optimal:
+        merged.append(picked_value)
+        if picked_side == 'left':
+            left.pop(0)
+        else:
+            right.pop(0)
+
+    done = len(left) == 0 and len(right) == 0
+
+    return jsonify({
+        "left": left,
+        "right": right,
+        "merged": merged,
+        "steps": steps,
+        "optimal": is_optimal,
+        "picked_value": picked_value,
+        "correct_value": correct_value,
+        "done": done
+    })
+
+@app.route('/quick-sort/assign', methods=['POST'])
+def quick_assign():
+    data = request.json
+    current_arr = data.get('current_arr')
+    selected_index = int(data.get('selected_index'))
+    side = data.get('side')
+    left = data.get('left')
+    right = data.get('right')
+    pivot = data.get('pivot')
+    placed_indices = data.get('placed_indices')
+    queue = data.get('queue')
+    sorted_positions = data.get('sorted_positions')
+    steps = int(data.get('steps', 0)) + 1
+
+    selected_val = current_arr[selected_index]
+    correct_side = 'left' if selected_val < pivot else 'right'
+    is_correct = (side == correct_side)
+
+    if is_correct:
+        if side == 'left':
+            left.append(selected_val)
+        else:
+            right.append(selected_val)
+        placed_indices.append(selected_index)
+
+    all_placed = len(placed_indices) == len(current_arr) - 1
+    done = False
+    next_arr = current_arr
+    next_pivot = pivot
+
+    if all_placed:
+        sorted_positions.append(pivot)
+        next_candidates = []
+        if len(left) > 1:
+            next_candidates.append(left)
+        elif len(left) == 1:
+            sorted_positions.append(left[0])
+        if len(right) > 1:
+            next_candidates.append(right)
+        elif len(right) == 1:
+            sorted_positions.append(right[0])
+
+        queue = queue + next_candidates[1:] if len(next_candidates) > 1 else queue
+        if next_candidates:
+            next_arr = next_candidates[0]
+            next_pivot = next_arr[-1]
+        elif queue:
+            next_arr = queue.pop(0)
+            next_pivot = next_arr[-1]
+        else:
+            done = True
+            next_arr = []
+
+    return jsonify({
+        "left": left,
+        "right": right,
+        "placed_indices": placed_indices,
+        "steps": steps,
+        "correct": is_correct,
+        "partition_complete": all_placed,
+        "next_arr": next_arr,
+        "next_pivot": next_pivot,
+        "sorted_positions": sorted_positions,
+        "queue": queue,
+        "done": done
+    })
+
 if __name__ == '__main__':
     app.run(debug=True, port=8080)
