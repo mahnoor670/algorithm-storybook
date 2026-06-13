@@ -55,7 +55,7 @@ export default function QuickSort() {
   const handleAssign = async (side) => {
     if (selectedIndex === null || won) return;
 
-    const response = await fetch('http://https://algorithm-storybook.onrender.com:8080/quick-sort/assign', {
+    const response = await fetch('https://algorithm-storybook.onrender.com/quick-sort/assign', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -121,9 +121,6 @@ export default function QuickSort() {
     setMessage(`The TA picked ${newScores[newScores.length - 1]} as the pivot! Click each score and assign it left (lower) or right (higher).`);
   };
 
-  const unplacedCards = state.currentArr
-    ? state.currentArr.filter((_, i) => !state.placedIndices.includes(i) && i !== state.currentArr.length - 1)
-    : [];
 
   return (
     <>

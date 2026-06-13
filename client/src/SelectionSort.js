@@ -28,7 +28,6 @@ export default function SelectionSort() {
   const navigate = useNavigate();
   const [grades, setGrades] = useState(generateGrades());
   const [sortedCount, setSortedCount] = useState(0);
-  const [selectedIndex, setSelectedIndex] = useState(null);
   const [steps, setSteps] = useState(0);
   const [message, setMessage] = useState("Help the professor sort the exams! Each round, find the lowest grade in the unsorted pile and click it!");
   const [won, setWon] = useState(false);
@@ -39,7 +38,7 @@ export default function SelectionSort() {
   const handleClick = async (index) => {
     if (won || index < sortedCount) return;
 
-    const response = await fetch('http://https://algorithm-storybook.onrender.com:8080/selection-sort/pick', {
+    const response = await fetch('https://algorithm-storybook.onrender.com/selection-sort/pick', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -56,7 +55,6 @@ export default function SelectionSort() {
     setSteps(data.steps);
     setSortedCount(data.sorted_count);
     setWasOptimal(data.optimal);
-    setSelectedIndex(null);
 
     if (data.optimal) {
       setHint(`Correct! Grade ${grades[index]} was the lowest in the unsorted pile. Selection sort always picks the minimum and places it next!`);
@@ -77,7 +75,6 @@ export default function SelectionSort() {
   const restart = () => {
     setGrades(generateGrades());
     setSortedCount(0);
-    setSelectedIndex(null);
     setSteps(0);
     setWon(false);
     setHint(null);
