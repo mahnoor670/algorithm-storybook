@@ -59,7 +59,7 @@ export default function SelectionSort() {
     if (data.optimal) {
       setHint(`Correct! Grade ${grades[index]} was the lowest in the unsorted pile. Selection sort always picks the minimum and places it next!`);
     } else {
-      setHint(`Not quite! Grade ${data.min_val} was the lowest in the unsorted pile. Selection sort scans the entire unsorted section to find the minimum each round.`);
+      setHint(`Not quite! Find the lowest in the current unsorted pile! Selection sort scans the entire unsorted section to find the minimum each round.`);
       setMessage(`Try again! Find the lowest grade in the unsorted exams.`);
     }
 
@@ -87,7 +87,7 @@ export default function SelectionSort() {
       <style>{styles}</style>
       <div style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",
-        fontFamily: "Georgia, serif", overflow: "hidden", position: "relative",
+        fontFamily: "'Ubuntu', sans-serif", overflow: "hidden", position: "relative",
         background: "transparent"
       }}>
 
@@ -105,7 +105,7 @@ export default function SelectionSort() {
         <div style={{ position: "fixed", top: "16px", right: "16px", zIndex: 50 }}>
           <button onClick={() => setShowLearn(true)} style={{
             background: "#FF5F05", border: "none", color: "white",
-            fontFamily: "Georgia, serif", fontSize: "0.85rem", fontWeight: "bold",
+            fontFamily: "'Ubuntu', sans-serif", fontSize: "0.85rem", fontWeight: "bold",
             padding: "10px 14px", borderRadius: "12px", cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
           }}>📖 Learn about this algorithm</button>

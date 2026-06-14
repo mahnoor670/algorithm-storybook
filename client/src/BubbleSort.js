@@ -36,12 +36,13 @@ export default function BubbleSort() {
   const [students, setStudents] = useState(generateShuffled());
   const [selected, setSelected] = useState(null);
   const [swaps, setSwaps] = useState(0);
-  const [message, setMessage] = useState("Click two neighboring students to swap them! Sort them from shortest to tallest for the class photo!");
+  const [message, setMessage] = useState("Click the LARGER student first, then their smaller neighbor to swap! Sort shortest to tallest for the class photo!");
   const [won, setWon] = useState(false);
   const [lastSwap, setLastSwap] = useState(null);
   const [hint, setHint] = useState(null);
   const [wasOptimal, setWasOptimal] = useState(null);
   const [showLearn, setShowLearn] = useState(false);
+
 
 
   const handleClick = async (index) => {
@@ -75,13 +76,13 @@ export default function BubbleSort() {
     setStudents(data.arr);
     setSwaps(data.swaps);
     setSelected(null);
-    setLastSwap([selected, index]);
+    setLastSwap(data.optimal ? [selected, index] : null);
     setWasOptimal(data.optimal);
 
     if (data.optimal) {
       setHint(`Good swap! Bubble sort always fixes neighbors that are out of order!`);
     } else {
-      setHint(`That swap wasn't needed — those two were already in order!`);
+      setHint(`That swap wasn't needed as those two were already in order!`);
     }
 
     if (data.sorted) {
@@ -101,7 +102,7 @@ export default function BubbleSort() {
     setLastSwap(null);
     setHint(null);
     setWasOptimal(null);
-    setMessage("Click two neighboring students to swap them! Sort them from shortest to tallest for the class photo!");
+    setMessage("Click the LARGER student first, then their smaller neighbor to swap! Sort shortest to tallest for the class photo!");
   };
 
   return (
@@ -109,7 +110,7 @@ export default function BubbleSort() {
       <style>{styles}</style>
       <div style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",
-        fontFamily: "Georgia, serif", overflow: "hidden", position: "relative",
+        fontFamily: "'Ubuntu', sans-serif", overflow: "hidden", position: "relative",
         background: "transparent"
       }}>
 
@@ -126,7 +127,7 @@ export default function BubbleSort() {
         <div style={{ position: "fixed", top: "16px", right: "16px", zIndex: 50 }}>
           <button onClick={() => setShowLearn(true)} style={{
             background: "#FF5F05", border: "none", color: "white",
-            fontFamily: "Georgia, serif", fontSize: "0.85rem", fontWeight: "bold",
+            fontFamily: "'Ubuntu', sans-serif", fontSize: "0.85rem", fontWeight: "bold",
             padding: "10px 14px", borderRadius: "12px", cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
           }}>📚 Learn about this algorithm</button>

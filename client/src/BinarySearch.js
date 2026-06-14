@@ -107,7 +107,7 @@ export default function BinarySearch() {
   return (
     <>
       <style>{styles}</style>
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "Georgia, serif", overflow: "hidden", position: "relative" }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Ubuntu', sans-serif", overflow: "hidden", position: "relative" }}>
 
         {/* SKY */}
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "linear-gradient(180deg, #87CEEB 0%, #b8e0f7 40%, #4a7c2f 40%, #3a6b20 100%)", zIndex: 0 }} />
@@ -139,7 +139,7 @@ export default function BinarySearch() {
         <div style={{ position: "fixed", top: "16px", right: "16px", zIndex: 50 }}>
           <button onClick={() => setShowLearn(true)} style={{
             background: "#FF5F05", border: "none", color: "white",
-            fontFamily: "Georgia, serif", fontSize: "0.85rem", fontWeight: "bold",
+            fontFamily: "'Ubuntu', sans-serif", fontSize: "0.85rem", fontWeight: "bold",
             padding: "10px 14px", borderRadius: "12px", cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
             display: "flex", alignItems: "center", gap: "6px"

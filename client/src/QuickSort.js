@@ -127,7 +127,7 @@ export default function QuickSort() {
       <style>{styles}</style>
       <div style={{
         minHeight: "100vh", display: "flex", flexDirection: "column",
-        fontFamily: "Georgia, serif", overflow: "hidden", position: "relative"
+        fontFamily: "'Ubuntu', sans-serif", overflow: "hidden", position: "relative"
       }}>
 
         {/* Background */}
@@ -142,7 +142,7 @@ export default function QuickSort() {
         <div style={{ position: "fixed", top: "16px", right: "16px", zIndex: 50 }}>
           <button onClick={() => setShowLearn(true)} style={{
             background: "#FF5F05", border: "none", color: "white",
-            fontFamily: "Georgia, serif", fontSize: "0.85rem", fontWeight: "bold",
+            fontFamily: "'Ubuntu', sans-serif", fontSize: "0.85rem", fontWeight: "bold",
             padding: "10px 14px", borderRadius: "12px", cursor: "pointer",
             boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
           }}>📖 Learn about this algorithm</button>

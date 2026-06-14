@@ -29,7 +29,7 @@ const levels = [
   {
     id: "insertion-sort",
     emoji: "📚",
-    title: "Libray Lineup",
+    title: "Library Lineup",
     algorithm: "Insertion Sort",
     description: "The library books are all out of order! Insert each book into the correct spot on the shelf and learn how insertion sort works.",
     available: true
@@ -60,8 +60,8 @@ export default function Menu() {
   return (
     <div style={{
       minHeight: "100vh",
-      background: "#f8f9fa",
-      fontFamily: "Georgia, serif",
+      background: "#F0EEFF",
+      fontFamily: "'Ubuntu', sans-serif",
       padding: "40px 20px"
     }}>
 
@@ -75,13 +75,7 @@ export default function Menu() {
         <p style={{
           color: "#666", fontSize: "1.1rem",
           margin: "12px 0 0"
-        }}>Learn computer science algorithms through interactive stories</p>
-        <div style={{
-          width: "60px", height: "4px",
-          background: "#FF5F05",
-          margin: "16px auto 0",
-          borderRadius: "2px"
-        }} />
+        }}>Learn algorithms by playing. No lectures required.</p>
       </div>
 
       {/* Level cards */}
@@ -110,12 +104,14 @@ export default function Menu() {
               if (level.available) {
                 e.currentTarget.style.transform = "translateY(-4px)";
                 e.currentTarget.style.boxShadow = "0 8px 30px rgba(0,0,0,0.12)";
-                e.currentTarget.style.borderColor = "#FF5F05";
+                e.currentTarget.style.background = "#b4ebe7ff";
+                e.currentTarget.style.borderColor = "#000000ff";
               }
             }}
             onMouseLeave={e => {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.08)";
+              e.currentTarget.style.background = "#ffffffff";
               e.currentTarget.style.borderColor = "transparent";
             }}
           >
