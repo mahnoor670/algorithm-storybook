@@ -1,9 +1,22 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 import random
 
 app = Flask(__name__)
 CORS(app, origins="*")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///leaderboard.db'
+db = SQLAlchemy(app)
+
+class Score(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    game = db.Column(db.String(50), nullable=False)
+    steps = db.Column(db.Integer, nullable=False)
+
+with app.app_context():
+    db.create_all()
 
 TOTAL_HOLES = 7
 
@@ -112,7 +125,6 @@ def insertion_insert():
         "correct_position": correct_position,
         "done": sorted_count == len(arr)
     })
-
 
 @app.route('/merge-sort/pick', methods=['POST'])
 def merge_pick():
@@ -228,6 +240,20 @@ def quick_assign():
         "queue": queue,
         "done": done
     })
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    game = request.args.get('game')
+    scores = Score.query.filter_by(game=game).order_by(Score.steps.asc()).limit(10).all()
+    return jsonify([{"name": s.name, "game": s.game, "steps": s.steps} for s in scores])
+
+@app.route('/leaderboard', methods=['POST'])
+def save_score():
+    data = request.json
+    score = Score(name=data['name'], game=data['game'], steps=data['steps'])
+    db.session.add(score)
+    db.session.commit()
+    return jsonify({"message": "Score saved!"})
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080)

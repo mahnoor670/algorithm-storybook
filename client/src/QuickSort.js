@@ -10,6 +10,8 @@ function generateScores() {
   return scores;
 }
 
+const API = "https://algorithm-storybook.onrender.com";
+
 const styles = `
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -41,8 +43,29 @@ export default function QuickSort() {
   const [hint, setHint] = useState(null);
   const [showLearn, setShowLearn] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(null);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [playerName, setPlayerName] = useState("");
+  const [scoreSaved, setScoreSaved] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([]);
 
   const STUDENT_EMOJIS = ["🧑‍💻", "👩‍💻", "👨‍💻", "🧑‍💻", "👩‍💻", "👨‍💻", "🧑‍💻"];
+
+  const fetchLeaderboard = async () => {
+    const res = await fetch(`${API}/leaderboard?game=quick-sort`);
+    const data = await res.json();
+    setLeaderboard(data);
+  };
+
+  const saveScore = async () => {
+    if (!playerName.trim()) return;
+    await fetch(`${API}/leaderboard`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: playerName.trim(), game: "quick-sort", steps })
+    });
+    setScoreSaved(true);
+    fetchLeaderboard();
+  };
 
   const handleSelectScore = (index) => {
     if (won) return;
@@ -55,21 +78,10 @@ export default function QuickSort() {
   const handleAssign = async (side) => {
     if (selectedIndex === null || won) return;
 
-    const response = await fetch('https://algorithm-storybook.onrender.com/quick-sort/assign', {
+    const response = await fetch(`${API}/quick-sort/assign`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        current_arr: state.currentArr,
-        selected_index: selectedIndex,
-        side: side,
-        left: state.left,
-        right: state.right,
-        pivot: state.pivot,
-        placed_indices: state.placedIndices,
-        queue: state.queue,
-        sorted_positions: state.sortedPositions,
-        steps: steps
-      })
+      body: JSON.stringify({ current_arr: state.currentArr, selected_index: selectedIndex, side, left: state.left, right: state.right, pivot: state.pivot, placed_indices: state.placedIndices, queue: state.queue, sorted_positions: state.sortedPositions, steps })
     });
 
     const data = await response.json();
@@ -88,26 +100,15 @@ export default function QuickSort() {
         setMessage(`🎉 All grades debugged and ranked in ${data.steps} steps!`);
         setWon(true);
         setHint(null);
+        setShowLeaderboard(true);
+        fetchLeaderboard();
       } else {
-        setState({
-          currentArr: data.next_arr,
-          left: [],
-          right: [],
-          pivot: data.next_pivot,
-          placedIndices: [],
-          sortedPositions: data.sorted_positions,
-          queue: data.queue,
-        });
+        setState({ currentArr: data.next_arr, left: [], right: [], pivot: data.next_pivot, placedIndices: [], sortedPositions: data.sorted_positions, queue: data.queue });
         setMessage(`Pivot ${state.pivot} locked in! New pivot: ${data.next_pivot}. Keep partitioning!`);
         setHint(null);
       }
     } else {
-      setState(prev => ({
-        ...prev,
-        left: data.left,
-        right: data.right,
-        placedIndices: data.placed_indices,
-      }));
+      setState(prev => ({ ...prev, left: data.left, right: data.right, placedIndices: data.placed_indices }));
     }
   };
 
@@ -118,170 +119,82 @@ export default function QuickSort() {
     setWon(false);
     setHint(null);
     setSelectedIndex(null);
+    setShowLeaderboard(false);
+    setPlayerName("");
+    setScoreSaved(false);
     setMessage(`The TA picked ${newScores[newScores.length - 1]} as the pivot! Click each score and assign it left (lower) or right (higher).`);
   };
-
 
   return (
     <>
       <style>{styles}</style>
-      <div style={{
-        minHeight: "100vh", display: "flex", flexDirection: "column",
-        fontFamily: "'Ubuntu', sans-serif", overflow: "hidden", position: "relative"
-      }}>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'Ubuntu', sans-serif", overflow: "hidden", position: "relative" }}>
 
-        {/* Background */}
-        <div style={{
-          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-          backgroundImage: "url('/coding.jpg')",
-          backgroundSize: "cover", backgroundPosition: "center",
-          filter: "brightness(0.45)", zIndex: 0
-        }} />
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", backgroundImage: "url('/coding.jpg')", backgroundSize: "cover", backgroundPosition: "center", filter: "brightness(0.45)", zIndex: 0 }} />
 
-        {/* Learn button */}
         <div style={{ position: "fixed", top: "16px", right: "16px", zIndex: 50 }}>
-          <button onClick={() => setShowLearn(true)} style={{
-            background: "#FF5F05", border: "none", color: "white",
-            fontFamily: "'Ubuntu', sans-serif", fontSize: "0.85rem", fontWeight: "bold",
-            padding: "10px 14px", borderRadius: "12px", cursor: "pointer",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-          }}>📖 Learn about this algorithm</button>
+          <button onClick={() => setShowLearn(true)} style={{ background: "#FF5F05", border: "none", color: "white", fontFamily: "'Ubuntu', sans-serif", fontSize: "0.85rem", fontWeight: "bold", padding: "10px 14px", borderRadius: "12px", cursor: "pointer", boxShadow: "0 4px 12px rgba(0,0,0,0.3)" }}>📖 Learn about this algorithm</button>
         </div>
 
-        {/* Header */}
         <div style={{ textAlign: "center", padding: "24px 20px 8px", zIndex: 10, position: "relative" }}>
-          <h1 style={{ color: "#FFD700", fontSize: "2.5rem", margin: 0, textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>
-            {won ? "🎉 Grades Debugged!" : "Debug the Grades"}
-          </h1>
-          <p style={{ color: "#fff", fontSize: "0.95rem", margin: "4px 0 0", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>
-            A Quick Sort Adventure
-          </p>
+          <h1 style={{ color: "#FFD700", fontSize: "2.5rem", margin: 0, textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>{won ? "🎉 Grades Debugged!" : "Debug the Grades"}</h1>
+          <p style={{ color: "#fff", fontSize: "0.95rem", margin: "4px 0 0", textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}>A Quick Sort Adventure</p>
         </div>
 
-        {/* Message box */}
         <div style={{ display: "flex", justifyContent: "center", padding: "8px 20px", zIndex: 10, position: "relative" }}>
-          <div style={{
-            background: won ? "rgba(255,220,50,0.96)" : "rgba(255,255,255,0.93)",
-            borderRadius: "16px", padding: "14px 24px",
-            maxWidth: "720px", width: "100%", textAlign: "center",
-            boxShadow: "0 6px 24px rgba(0,0,0,0.25)"
-          }}>
-            <p style={{ fontSize: "1.05rem", color: "#13294B", fontWeight: "bold", margin: 0, lineHeight: "1.6" }}>
-              {message}
-            </p>
+          <div style={{ background: won ? "rgba(255,220,50,0.96)" : "rgba(255,255,255,0.93)", borderRadius: "16px", padding: "14px 24px", maxWidth: "720px", width: "100%", textAlign: "center", boxShadow: "0 6px 24px rgba(0,0,0,0.25)" }}>
+            <p style={{ fontSize: "1.05rem", color: "#13294B", fontWeight: "bold", margin: 0, lineHeight: "1.6" }}>{message}</p>
           </div>
         </div>
 
-        {/* Hint box */}
         {hint && !won && (
           <div style={{ display: "flex", justifyContent: "center", padding: "6px 20px", zIndex: 10, position: "relative" }}>
-            <div style={{
-              background: "rgba(50,180,80,0.92)",
-              borderRadius: "12px", padding: "10px 20px",
-              maxWidth: "720px", width: "100%", textAlign: "center",
-              boxShadow: "0 4px 16px rgba(0,0,0,0.2)"
-            }}>
-              <p style={{ margin: 0, color: "white", fontWeight: "bold", fontSize: "0.95rem" }}>
-                {hint}
-              </p>
+            <div style={{ background: "rgba(50,180,80,0.92)", borderRadius: "12px", padding: "10px 20px", maxWidth: "720px", width: "100%", textAlign: "center", boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }}>
+              <p style={{ margin: 0, color: "white", fontWeight: "bold", fontSize: "0.95rem" }}>{hint}</p>
             </div>
           </div>
         )}
 
-        {/* Steps */}
         <div style={{ textAlign: "center", zIndex: 10, position: "relative", margin: "4px 0" }}>
-          <span style={{ background: "rgba(19,41,75,0.85)", color: "white", padding: "5px 18px", borderRadius: "20px", fontSize: "0.9rem" }}>
-            Steps: <strong>{steps}</strong>
-          </span>
+          <span style={{ background: "rgba(19,41,75,0.85)", color: "white", padding: "5px 18px", borderRadius: "20px", fontSize: "0.9rem" }}>Steps: <strong>{steps}</strong></span>
         </div>
 
-        {/* Locked in */}
         {state.sortedPositions && state.sortedPositions.length > 0 && (
           <div style={{ display: "flex", justifyContent: "center", padding: "4px 20px", zIndex: 10, position: "relative" }}>
-            <div style={{
-              background: "rgba(19,41,75,0.85)",
-              borderRadius: "12px", padding: "8px 16px",
-              maxWidth: "720px", width: "100%", textAlign: "center",
-            }}>
-              <p style={{ margin: "0 0 6px", color: "white", fontSize: "0.75rem", fontWeight: "bold" }}>
-                Locked in ✅
-              </p>
+            <div style={{ background: "rgba(19,41,75,0.85)", borderRadius: "12px", padding: "8px 16px", maxWidth: "720px", width: "100%", textAlign: "center" }}>
+              <p style={{ margin: "0 0 6px", color: "white", fontSize: "0.75rem", fontWeight: "bold" }}>Locked in ✅</p>
               <div style={{ display: "flex", justifyContent: "center", gap: "6px", flexWrap: "wrap" }}>
                 {[...state.sortedPositions].sort((a, b) => a - b).map((val, i) => (
-                  <div key={i} style={{
-                    width: "44px", height: "44px",
-                    background: "linear-gradient(135deg, #2ecc71, #27ae60)",
-                    borderRadius: "8px",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    color: "white", fontWeight: "bold", fontSize: "0.85rem",
-                    boxShadow: "0 2px 8px rgba(46,204,113,0.4)"
-                  }}>
-                    {val}
-                  </div>
+                  <div key={i} style={{ width: "44px", height: "44px", background: "linear-gradient(135deg, #2ecc71, #27ae60)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold", fontSize: "0.85rem", boxShadow: "0 2px 8px rgba(46,204,113,0.4)" }}>{val}</div>
                 ))}
               </div>
             </div>
           </div>
         )}
 
-        {/* Left Right buttons */}
         {selectedIndex !== null && !won && (
           <div style={{ display: "flex", justifyContent: "center", gap: "16px", zIndex: 10, position: "relative", margin: "6px 0" }}>
-            <button onClick={() => handleAssign('left')} style={{
-              background: "linear-gradient(135deg, #3498db, #2980b9)",
-              color: "white", border: "none", padding: "10px 28px",
-              borderRadius: "10px", fontSize: "0.95rem", fontWeight: "bold",
-              cursor: "pointer", boxShadow: "0 4px 12px rgba(52,152,219,0.4)"
-            }}>← Left (Lower)</button>
-            <button onClick={() => handleAssign('right')} style={{
-              background: "linear-gradient(135deg, #e74c3c, #c0392b)",
-              color: "white", border: "none", padding: "10px 28px",
-              borderRadius: "10px", fontSize: "0.95rem", fontWeight: "bold",
-              cursor: "pointer", boxShadow: "0 4px 12px rgba(231,76,60,0.4)"
-            }}>Right (Higher) →</button>
+            <button onClick={() => handleAssign('left')} style={{ background: "linear-gradient(135deg, #3498db, #2980b9)", color: "white", border: "none", padding: "10px 28px", borderRadius: "10px", fontSize: "0.95rem", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 12px rgba(52,152,219,0.4)" }}>← Left (Lower)</button>
+            <button onClick={() => handleAssign('right')} style={{ background: "linear-gradient(135deg, #e74c3c, #c0392b)", color: "white", border: "none", padding: "10px 28px", borderRadius: "10px", fontSize: "0.95rem", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 12px rgba(231,76,60,0.4)" }}>Right (Higher) →</button>
           </div>
         )}
 
-        {/* Three column game area */}
         {!won && (
-          <div style={{
-            position: "fixed", bottom: "100px", left: 0, right: 0,
-            display: "flex", justifyContent: "center", gap: "16px",
-            alignItems: "flex-end", zIndex: 10, padding: "0 20px"
-          }}>
-
-            {/* Left pile */}
+          <div style={{ position: "fixed", bottom: "100px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "16px", alignItems: "flex-end", zIndex: 10, padding: "0 20px" }}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", minWidth: "130px" }}>
-              <span style={{ color: "white", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(52,152,219,0.85)", padding: "4px 14px", borderRadius: "20px" }}>
-                ← Lower
-              </span>
+              <span style={{ color: "white", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(52,152,219,0.85)", padding: "4px 14px", borderRadius: "20px" }}>← Lower</span>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "center", minHeight: "75px", alignItems: "flex-end" }}>
                 {state.left && state.left.map((val, i) => (
-                  <div key={i} style={{
-                    width: "55px", height: "65px",
-                    background: "linear-gradient(135deg, #3498db, #2980b9)",
-                    borderRadius: "10px",
-                    display: "flex", flexDirection: "column",
-                    alignItems: "center", justifyContent: "center",
-                    color: "white", fontWeight: "bold",
-                    boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-                    animation: "fadeIn 0.3s ease-out"
-                  }}>
-                    <span>{val}</span>
-                    <span style={{ fontSize: "0.55rem" }}>pts</span>
+                  <div key={i} style={{ width: "55px", height: "65px", background: "linear-gradient(135deg, #3498db, #2980b9)", borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold", boxShadow: "0 4px 10px rgba(0,0,0,0.3)", animation: "fadeIn 0.3s ease-out" }}>
+                    <span>{val}</span><span style={{ fontSize: "0.55rem" }}>pts</span>
                   </div>
                 ))}
-                {(!state.left || state.left.length === 0) && (
-                  <div style={{ width: "55px", height: "65px", border: "2px dashed rgba(52,152,219,0.4)", borderRadius: "10px" }} />
-                )}
+                {(!state.left || state.left.length === 0) && <div style={{ width: "55px", height: "65px", border: "2px dashed rgba(52,152,219,0.4)", borderRadius: "10px" }} />}
               </div>
             </div>
 
-            {/* Center - unplaced + pivot */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px" }}>
-              <span style={{ color: "white", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(19,41,75,0.8)", padding: "4px 14px", borderRadius: "20px" }}>
-                To assign
-              </span>
+              <span style={{ color: "white", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(19,41,75,0.8)", padding: "4px 14px", borderRadius: "20px" }}>To assign</span>
               <div style={{ display: "flex", gap: "8px", alignItems: "flex-end" }}>
                 {state.currentArr && state.currentArr.map((score, index) => {
                   const isPivot = index === state.currentArr.length - 1;
@@ -291,35 +204,9 @@ export default function QuickSort() {
                   return (
                     <div key={index} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "4px" }}>
                       <span style={{ fontSize: "1.4rem" }}>{STUDENT_EMOJIS[index % 7]}</span>
-                      <div
-                        className={isPivot ? "" : "score-btn"}
-                        onClick={() => !isPivot && !isPlaced && handleSelectScore(index)}
-                        style={{
-                          width: "62px", height: "72px",
-                          background: isPivot
-                            ? "linear-gradient(135deg, #FFD700, #FFA500)"
-                            : isSelected
-                            ? "linear-gradient(135deg, #2ecc71, #27ae60)"
-                            : "linear-gradient(135deg, #FF5F05, #cc4400)",
-                          borderRadius: "10px",
-                          display: "flex", flexDirection: "column",
-                          alignItems: "center", justifyContent: "center",
-                          color: isPivot ? "#13294B" : "white",
-                          fontWeight: "bold",
-                          cursor: isPivot ? "default" : "pointer",
-                          boxShadow: isPivot
-                            ? "0 4px 14px rgba(255,215,0,0.6)"
-                            : isSelected
-                            ? "0 4px 14px rgba(46,204,113,0.6)"
-                            : "0 4px 10px rgba(0,0,0,0.3)",
-                          border: isPivot ? "3px solid white" : isSelected ? "3px solid #2ecc71" : "none",
-                          transition: "all 0.2s"
-                        }}
-                      >
+                      <div className={isPivot ? "" : "score-btn"} onClick={() => !isPivot && !isPlaced && handleSelectScore(index)} style={{ width: "62px", height: "72px", background: isPivot ? "linear-gradient(135deg, #FFD700, #FFA500)" : isSelected ? "linear-gradient(135deg, #2ecc71, #27ae60)" : "linear-gradient(135deg, #FF5F05, #cc4400)", borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: isPivot ? "#13294B" : "white", fontWeight: "bold", cursor: isPivot ? "default" : "pointer", boxShadow: isPivot ? "0 4px 14px rgba(255,215,0,0.6)" : isSelected ? "0 4px 14px rgba(46,204,113,0.6)" : "0 4px 10px rgba(0,0,0,0.3)", border: isPivot ? "3px solid white" : isSelected ? "3px solid #2ecc71" : "none", transition: "all 0.2s" }}>
                         <span style={{ fontSize: "1.1rem" }}>{score}</span>
-                        <span style={{ fontSize: "0.55rem", marginTop: "2px" }}>
-                          {isPivot ? "PIVOT" : "pts"}
-                        </span>
+                        <span style={{ fontSize: "0.55rem", marginTop: "2px" }}>{isPivot ? "PIVOT" : "pts"}</span>
                       </div>
                     </div>
                   );
@@ -327,75 +214,67 @@ export default function QuickSort() {
               </div>
             </div>
 
-            {/* Right pile */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", minWidth: "130px" }}>
-              <span style={{ color: "white", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(231,76,60,0.85)", padding: "4px 14px", borderRadius: "20px" }}>
-                Higher →
-              </span>
+              <span style={{ color: "white", fontWeight: "bold", fontSize: "0.85rem", background: "rgba(231,76,60,0.85)", padding: "4px 14px", borderRadius: "20px" }}>Higher →</span>
               <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", justifyContent: "center", minHeight: "75px", alignItems: "flex-end" }}>
                 {state.right && state.right.map((val, i) => (
-                  <div key={i} style={{
-                    width: "55px", height: "65px",
-                    background: "linear-gradient(135deg, #e74c3c, #c0392b)",
-                    borderRadius: "10px",
-                    display: "flex", flexDirection: "column",
-                    alignItems: "center", justifyContent: "center",
-                    color: "white", fontWeight: "bold",
-                    boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-                    animation: "fadeIn 0.3s ease-out"
-                  }}>
-                    <span>{val}</span>
-                    <span style={{ fontSize: "0.55rem" }}>pts</span>
+                  <div key={i} style={{ width: "55px", height: "65px", background: "linear-gradient(135deg, #e74c3c, #c0392b)", borderRadius: "10px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", fontWeight: "bold", boxShadow: "0 4px 10px rgba(0,0,0,0.3)", animation: "fadeIn 0.3s ease-out" }}>
+                    <span>{val}</span><span style={{ fontSize: "0.55rem" }}>pts</span>
                   </div>
                 ))}
-                {(!state.right || state.right.length === 0) && (
-                  <div style={{ width: "55px", height: "65px", border: "2px dashed rgba(231,76,60,0.4)", borderRadius: "10px" }} />
-                )}
+                {(!state.right || state.right.length === 0) && <div style={{ width: "55px", height: "65px", border: "2px dashed rgba(231,76,60,0.4)", borderRadius: "10px" }} />}
               </div>
             </div>
-
           </div>
         )}
 
-        {/* Buttons */}
-        <div style={{
-          position: "fixed", bottom: "16px", left: 0, right: 0,
-          textAlign: "center", zIndex: 10,
-          display: "flex", justifyContent: "center", gap: "12px"
-        }}>
-          <button onClick={() => navigate("/")} style={{
-            background: "rgba(255,255,255,0.9)", color: "#13294B", border: "none",
-            padding: "12px 24px", borderRadius: "12px", fontSize: "1rem",
-            fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 15px rgba(0,0,0,0.3)"
-          }}>← Main Menu</button>
-          <button onClick={restart} style={{
-            background: "linear-gradient(135deg, #13294B, #1a3a6b)",
-            color: "white", border: "none", padding: "12px 36px",
-            borderRadius: "12px", fontSize: "1rem", fontWeight: "bold",
-            cursor: "pointer", boxShadow: "0 4px 15px rgba(0,0,0,0.4)"
-          }}>🔄 New Game</button>
+        <div style={{ position: "fixed", bottom: "16px", left: 0, right: 0, textAlign: "center", zIndex: 10, display: "flex", justifyContent: "center", gap: "12px" }}>
+          <button onClick={() => navigate("/")} style={{ background: "rgba(255,255,255,0.9)", color: "#13294B", border: "none", padding: "12px 24px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 15px rgba(0,0,0,0.3)" }}>← Main Menu</button>
+          <button onClick={restart} style={{ background: "linear-gradient(135deg, #13294B, #1a3a6b)", color: "white", border: "none", padding: "12px 36px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer", boxShadow: "0 4px 15px rgba(0,0,0,0.4)" }}>🔄 New Game</button>
         </div>
       </div>
 
-      {/* Learn Popup */}
+      {showLeaderboard && (
+        <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, animation: "fadeIn 0.3s ease-out" }}>
+          <div style={{ background: "white", borderRadius: "24px", padding: "36px", maxWidth: "460px", width: "90%", textAlign: "center", boxShadow: "0 25px 60px rgba(0,0,0,0.5)" }}>
+            <h2 style={{ color: "#FF5F05", marginTop: 0 }}>🎉 Grades Debugged!</h2>
+            <p style={{ color: "#13294B", fontWeight: "bold", fontSize: "1.1rem" }}>You did it in <strong>{steps}</strong> step{steps !== 1 ? "s" : ""}!</p>
+            {!scoreSaved ? (
+              <>
+                <p style={{ color: "#666", fontSize: "0.95rem" }}>Enter your name to save your score to the leaderboard.</p>
+                <input type="text" placeholder="Your name" value={playerName} onChange={e => setPlayerName(e.target.value)} maxLength={20} style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "2px solid #ddd", fontSize: "1rem", marginBottom: "12px", boxSizing: "border-box", fontFamily: "'Ubuntu', sans-serif" }} />
+                <button onClick={saveScore} disabled={!playerName.trim()} style={{ width: "100%", background: "#FF5F05", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontSize: "1rem", fontWeight: "bold", cursor: playerName.trim() ? "pointer" : "not-allowed", opacity: playerName.trim() ? 1 : 0.5, marginBottom: "10px" }}>Save Score</button>
+                <button onClick={() => setShowLeaderboard(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>Skip</button>
+              </>
+            ) : (
+              <>
+                <p style={{ color: "#2d8a1e", fontWeight: "bold" }}>Score saved!</p>
+                <h3 style={{ color: "#13294B", marginBottom: "12px" }}>Top Scores</h3>
+                {leaderboard.map((entry, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", borderRadius: "8px", background: i === 0 ? "#fff8e1" : "#f9f9f9", marginBottom: "6px", fontWeight: i === 0 ? "bold" : "normal" }}>
+                    <span>{i + 1}. {entry.name}</span>
+                    <span>{entry.steps} step{entry.steps !== 1 ? "s" : ""}</span>
+                  </div>
+                ))}
+                <button onClick={() => setShowLeaderboard(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "12px", borderRadius: "10px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer", marginTop: "12px" }}>Close</button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
             <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Quick Sort</h2>
             <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Quick Sort</strong> picks the last element as a pivot, puts everything smaller to the left and everything larger to the right, then repeats for each side.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
-              <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>
-                <strong>In this game:</strong> The last score is always the pivot. Click each other score and assign it left (lower than pivot) or right (higher than pivot). Once all scores are assigned the pivot locks in place and the process repeats for each side!
-              </p>
+              <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}><strong>In this game:</strong> The last score is always the pivot. Click each other score and assign it left (lower than pivot) or right (higher than pivot). Once all scores are assigned the pivot locks in place and the process repeats!</p>
             </div>
             <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
-              <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-                💻<strong> Big O Notation:</strong> Quick sort runs in <strong>O(n log n)</strong> on average but <strong>O(n²)</strong> worst case when the pivot is always the smallest or largest. Good pivot choice matters!
-              </p>
+              <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>💻<strong> Big O Notation:</strong> Quick sort runs in <strong>O(n log n)</strong> on average but <strong>O(n²)</strong> worst case when the pivot is always the smallest or largest. Good pivot choice matters!</p>
             </div>
-            <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>
-              Got it!
-            </button>
+            <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>Got it!</button>
           </div>
         </div>
       )}
