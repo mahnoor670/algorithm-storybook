@@ -228,24 +228,16 @@ export default function SelectionSort() {
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
-            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>What is Selection Sort?</h2>
+            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Selection Sort</h2>
             <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Selection Sort</strong> works by repeatedly finding the smallest item in the unsorted section and moving it to the front.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
               <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>
                 <strong>In this game:</strong> The professor's exams are all out of order. Each round, find the exam with the lowest grade in the unsorted pile and click it. That exam gets placed next in the sorted section!
               </p>
             </div>
-            <p style={{ color: "#13294B", fontWeight: "bold" }}>Example:</p>
-            <ul style={{ color: "#555", lineHeight: "2.2" }}>
-              <li>Exams: 78, 45, 91, 62</li>
-              <li>Round 1: find minimum (45) → place it first → 45, 78, 91, 62</li>
-              <li>Round 2: find minimum in remaining (62) → place it → 45, 62, 91, 78</li>
-              <li>Round 3: find minimum in remaining (78) → place it → 45, 62, 78, 91</li>
-              <li>Sorted in just 3 rounds!</li>
-            </ul>
             <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
               <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-                <strong>Big O Notation:</strong> Selection sort always runs in <strong>O(n²)</strong> time regardless of input. Unlike bubble sort, it does not have a best case of O(n) because it always scans the entire unsorted section every round, even if the array is already sorted.
+                💻<strong> Big O Notation:</strong> Selection sort always runs in <strong>O(n²)</strong> time regardless of input. Unlike bubble sort, it does not have a best case of O(n) because it always scans the entire unsorted section every round, even if the array is already sorted.
               </p>
             </div>
             <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>

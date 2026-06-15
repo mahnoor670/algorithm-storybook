@@ -255,21 +255,13 @@ export default function BinarySearch() {
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, animation: "fadeIn 0.3s ease-out" }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
-            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>🧠 What is Binary Search?</h2>
-            <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Binary Search</strong> is one of the smartest algorithms in computer science. Instead of checking every option one by one, it always cuts the remaining choices <strong>in half.</strong></p>
+            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Binary Search?</h2>
+            <p style={{ color: "#13294B", lineHeight: "1.8" }}>Binary Search is one of the smartest algorithms in computer science. Instead of checking every option one by one, it always cuts the remaining choices in half.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
-              <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>🐿️ <strong>In this game:</strong> The acorn is hiding in one of 7 holes. The smartest move is always to guess the <strong>middle hole.</strong> Each guess eliminates half the remaining holes!</p>
+              <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}><strong>In this game:</strong> The acorn is hiding in one of 7 holes. The smartest move is always to guess the middle hole. Each guess eliminates half the remaining holes!</p>
             </div>
-            <p style={{ color: "#13294B", fontWeight: "bold" }}>📖 Example:</p>
-            <ul style={{ color: "#555", lineHeight: "2.2" }}>
-              <li>Holes 1–7 → guess <strong>4</strong> (the middle)</li>
-              <li>Hint: "higher!" → holes 5, 6, 7 remain</li>
-              <li>Guess <strong>6</strong> (middle of 5–7)</li>
-              <li>Hint: "lower!" → only hole <strong>5</strong> remains</li>
-              <li>Found in just <strong>3 steps!</strong> 🎉</li>
-            </ul>
             <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
-              <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>💻 <strong>Why do computers love this?</strong> Searching 1,000,000 items one by one = 1,000,000 steps. Binary search does it in just <strong>20 steps.</strong> That's O(log n)!</p>
+              <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>💻 <strong>Big O Notation:</strong> Big O notation is a math tool used in computer science to describe an algorithm's speed or memory usage scales as the size of the input data increases.  Binary search runs in <strong>O(log n)</strong> time, meaning every step cuts the remaining options in half. Searching 1,000,000 items linearly takes up to 1,000,000 steps. Binary search does it in just 20!</p>
             </div>
             <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>
               Got it!

@@ -381,25 +381,16 @@ export default function QuickSort() {
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
-            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>What is Quick Sort?</h2>
+            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Quick Sort</h2>
             <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Quick Sort</strong> picks the last element as a pivot, puts everything smaller to the left and everything larger to the right, then repeats for each side.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
               <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>
                 <strong>In this game:</strong> The last score is always the pivot. Click each other score and assign it left (lower than pivot) or right (higher than pivot). Once all scores are assigned the pivot locks in place and the process repeats for each side!
               </p>
             </div>
-            <p style={{ color: "#13294B", fontWeight: "bold" }}>Example:</p>
-            <ul style={{ color: "#555", lineHeight: "2.2" }}>
-              <li>Scores: [67, 82, 45, 91, 58] — pivot is 58</li>
-              <li>67 {">"} 58 → right</li>
-              <li>82 {">"} 58 → right</li>
-              <li>45 {"<"} 58 → left</li>
-              <li>91 {">"} 58 → right</li>
-              <li>Result: [45] | [58] | [67, 82, 91] — 58 locked!</li>
-            </ul>
             <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
               <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-                <strong>Big O Notation:</strong> Quick sort runs in <strong>O(n log n)</strong> on average but <strong>O(n²)</strong> worst case when the pivot is always the smallest or largest. Good pivot choice matters!
+                💻<strong> Big O Notation:</strong> Quick sort runs in <strong>O(n log n)</strong> on average but <strong>O(n²)</strong> worst case when the pivot is always the smallest or largest. Good pivot choice matters!
               </p>
             </div>
             <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>

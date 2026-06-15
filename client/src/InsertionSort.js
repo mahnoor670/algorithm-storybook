@@ -283,23 +283,16 @@ export default function InsertionSort() {
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
-            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>What is Insertion Sort?</h2>
+            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Insertion Sort</h2>
             <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Insertion Sort</strong> works by taking one item at a time and inserting it into the correct position among the already sorted items.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
               <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>
                 <strong>In this game:</strong> Books arrive one at a time. You need to slide each book into the right spot on the shelf so they stay in order by year!
               </p>
             </div>
-            <p style={{ color: "#13294B", fontWeight: "bold" }}>Example:</p>
-            <ul style={{ color: "#555", lineHeight: "2.2" }}>
-              <li>Shelf: [1987] | Next book: 1972</li>
-              <li>1972 is less than 1987 → insert before it → [1972, 1987]</li>
-              <li>Next book: 2003 → greater than both → insert at end → [1972, 1987, 2003]</li>
-              <li>Keep going until all books are sorted!</li>
-            </ul>
             <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
               <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-                <strong>Big O Notation:</strong> Insertion sort runs in <strong>O(n²)</strong> in the worst case but <strong>O(n)</strong> when the list is nearly sorted — making it great for small or almost-sorted datasets!
+                💻<strong> Big O Notation:</strong> Insertion sort runs in <strong>O(n²)</strong> in the worst case but <strong>O(n)</strong> when the list is nearly sorted — making it great for small or almost-sorted datasets!
               </p>
             </div>
             <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>

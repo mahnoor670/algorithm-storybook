@@ -252,29 +252,21 @@ export default function BubbleSort() {
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
-            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>What is Bubble Sort?</h2>
+            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Bubble Sort</h2>
             <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Bubble Sort</strong> is one of the simplest sorting algorithms. It works by repeatedly comparing two neighboring items and swapping them if they are in the wrong order.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
               <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>
-                <strong>In this game:</strong> Each student has a height number. Your job is to swap neighbors until everyone is lined up shortest to tallest. Just like bubble sort — compare two neighbors, swap if needed, repeat!
+                <strong>In this game:</strong> Each student has a height number. Compare two neighbors, swap them if they're out of order, and keep repeating until everyone is lined up shortest to tallest!
               </p>
             </div>
-            <p style={{ color: "#13294B", fontWeight: "bold" }}>Example:</p>
-            <ul style={{ color: "#555", lineHeight: "2.2" }}>
-              <li>Students: 3, 1, 4, 2</li>
-              <li>Compare 3 and 1 → swap! → 1, 3, 4, 2</li>
-              <li>Compare 3 and 4 → no swap needed</li>
-              <li>Compare 4 and 2 → swap! → 1, 3, 2, 4</li>
-              <li>Keep going until sorted: 1, 2, 3, 4</li>
-            </ul>
-            <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
+            <div style={{ background: "#fffcb0ff", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
               <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-                <strong>Why is it called Bubble Sort?</strong> The largest numbers slowly "bubble up" to the end of the list with each pass, just like bubbles rising to the top of water!
+                <strong>Why is it called Bubble Sort?</strong> Bubble sort is named after the way larger or smaller numbers slowly "bubble up" to their correct spot!
               </p>
             </div>
-            <div style={{ background: "#f0fff4", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #2ecc71" }}>
+            <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
   <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-    <strong>Big O Notation:</strong> Bubble sort runs in <strong>O(n²)</strong> time in the worst and average case. That means if you have 10 students, you might need up to 100 comparisons. For 100 students? Up to 10,000! In the best case, when the list is already sorted, it runs in <strong>O(n)</strong> time since it only needs one pass to confirm everything is in order.
+    💻<strong> Big O Notation:</strong> Bubble sort runs in <strong>O(n²)</strong> time in the worst and average case. That means if you have 10 students, you might need up to 100 comparisons. In the best case, when the list is already sorted, it runs in <strong>O(n)</strong> time since it only needs one pass to confirm everything is in order.
   </p>
 </div>
             <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>

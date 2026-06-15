@@ -308,24 +308,16 @@ export default function MergeSort() {
       {showLearn && (
         <div style={{ position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.75)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100 }}>
           <div style={{ background: "white", borderRadius: "24px", padding: "40px", maxWidth: "520px", width: "90%", textAlign: "left", boxShadow: "0 25px 60px rgba(0,0,0,0.5)", maxHeight: "85vh", overflowY: "auto" }}>
-            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>What is Merge Sort?</h2>
+            <h2 style={{ color: "#FF5F05", textAlign: "center", marginTop: 0 }}>Merge Sort</h2>
             <p style={{ color: "#13294B", lineHeight: "1.8" }}><strong>Merge Sort</strong> is a divide and conquer algorithm. It splits a list in half, sorts each half, then merges them back together.</p>
             <div style={{ background: "#fff8f0", borderRadius: "12px", padding: "16px", margin: "16px 0", borderLeft: "4px solid #FF5F05" }}>
               <p style={{ margin: 0, color: "#333", lineHeight: "1.8" }}>
                 <strong>In this game:</strong> Two study groups have already sorted themselves by problems solved. Your job is to merge them into one sorted group by always picking the student with fewer problems solved first!
               </p>
             </div>
-            <p style={{ color: "#13294B", fontWeight: "bold" }}>Example:</p>
-            <ul style={{ color: "#555", lineHeight: "2.2" }}>
-              <li>Group A: [8, 19, 27] | Group B: [12, 22, 34]</li>
-              <li>Compare 8 and 12 → pick 8 → Merged: [8]</li>
-              <li>Compare 19 and 12 → pick 12 → Merged: [8, 12]</li>
-              <li>Compare 19 and 22 → pick 19 → Merged: [8, 12, 19]</li>
-              <li>Keep going until all students are merged!</li>
-            </ul>
             <div style={{ background: "#e8f4fd", borderRadius: "12px", padding: "16px", margin: "16px 0" }}>
               <p style={{ margin: 0, color: "#13294B", lineHeight: "1.8" }}>
-                <strong>Big O Notation:</strong> Merge sort runs in <strong>O(n log n)</strong> in all cases — best, average, and worst. That makes it one of the most efficient sorting algorithms for large datasets!
+                💻<strong> Big O Notation:</strong> Merge sort runs in <strong>O(n log n)</strong> in all cases — best, average, and worst. That makes it one of the most efficient sorting algorithms for large datasets!
               </p>
             </div>
             <button onClick={() => setShowLearn(false)} style={{ width: "100%", background: "#13294B", color: "white", border: "none", padding: "14px", borderRadius: "12px", fontSize: "1rem", fontWeight: "bold", cursor: "pointer" }}>
