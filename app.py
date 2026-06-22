@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import random
+import string
 
 app = Flask(__name__)
 CORS(app, origins="*")
@@ -9,16 +10,36 @@ CORS(app, origins="*")
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///leaderboard.db'
 db = SQLAlchemy(app)
 
+
+class Class(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    teacher_name = db.Column(db.String(50), nullable=False)
+    class_name = db.Column(db.String(50), nullable=False)
+    join_code = db.Column(db.String(6), unique=True, nullable=False)
+
+class Student(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    join_code = db.Column(db.String(6), nullable=False)
+
 class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     game = db.Column(db.String(50), nullable=False)
     steps = db.Column(db.Integer, nullable=False)
+    join_code = db.Column(db.String(6), nullable=True)
 
 with app.app_context():
     db.create_all()
 
 TOTAL_HOLES = 7
+
+def generate_join_code():
+    while True:
+        code = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+        existing = Class.query.filter_by(join_code=code).first()
+        if not existing:
+            return code
 
 @app.route('/start', methods=['GET'])
 def start_game():
@@ -250,10 +271,87 @@ def get_leaderboard():
 @app.route('/leaderboard', methods=['POST'])
 def save_score():
     data = request.json
-    score = Score(name=data['name'], game=data['game'], steps=data['steps'])
+    score = Score(
+        name=data['name'],
+        game=data['game'],
+        steps=data['steps'],
+        join_code=data.get('join_code')
+    )
     db.session.add(score)
     db.session.commit()
     return jsonify({"message": "Score saved!"})
+
+
+@app.route('/class/create', methods=['POST'])
+def create_class():
+    data = request.json
+    teacher_name = data.get('teacher_name')
+    class_name = data.get('class_name')
+
+    if not teacher_name or not class_name:
+        return jsonify({"error": "Teacher name and class name are required"}), 400
+
+    join_code = generate_join_code()
+    new_class = Class(teacher_name=teacher_name, class_name=class_name, join_code=join_code)
+    db.session.add(new_class)
+    db.session.commit()
+
+    return jsonify({
+        "id": new_class.id,
+        "teacher_name": new_class.teacher_name,
+        "class_name": new_class.class_name,
+        "join_code": new_class.join_code
+    })
+
+
+@app.route('/class/join', methods=['POST'])
+def join_class():
+    data = request.json
+    name = data.get('name')
+    join_code = data.get('join_code')
+
+    if not name or not join_code:
+        return jsonify({"error": "Name and join code are required"}), 400
+
+    existing_class = Class.query.filter_by(join_code=join_code).first()
+    if not existing_class:
+        return jsonify({"error": "Invalid join code"}), 404
+
+    student = Student(name=name, join_code=join_code)
+    db.session.add(student)
+    db.session.commit()
+
+    return jsonify({"message": "Joined class!", "join_code": join_code, "class_name": existing_class.class_name})
+
+
+@app.route('/class/<join_code>', methods=['GET'])
+def get_class_dashboard(join_code):
+    class_info = Class.query.filter_by(join_code=join_code).first()
+    if not class_info:
+        return jsonify({"error": "Class not found"}), 404
+
+    students = Student.query.filter_by(join_code=join_code).all()
+    scores = Score.query.filter_by(join_code=join_code).all()
+
+    student_data = []
+    for student in students:
+        student_scores = [s for s in scores if s.name == student.name]
+        best_scores = {}
+        for s in student_scores:
+            if s.game not in best_scores or s.steps < best_scores[s.game]:
+                best_scores[s.game] = s.steps
+        student_data.append({
+            "name": student.name,
+            "scores": best_scores
+        })
+
+    return jsonify({
+        "class_name": class_info.class_name,
+        "teacher_name": class_info.teacher_name,
+        "join_code": class_info.join_code,
+        "students": student_data
+    })
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=8080)

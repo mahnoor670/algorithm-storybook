@@ -71,7 +71,7 @@ export default function BinarySearch() {
     await fetch(`${API}/leaderboard`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: playerName.trim(), game: "binary-search", steps })
+      body: JSON.stringify({ name: playerName.trim(), game: "binary-search", steps, join_code: localStorage.getItem("joinCode") || null })
     });
     setScoreSaved(true);
     fetchLeaderboard();

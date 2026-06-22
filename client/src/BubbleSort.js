@@ -58,7 +58,7 @@ export default function BubbleSort() {
     await fetch(`${API}/leaderboard`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: playerName.trim(), game: "bubble-sort", steps: swaps })
+      body: JSON.stringify({ name: playerName.trim(), game: "bubble-sort", steps: swaps, join_code: localStorage.getItem("joinCode") || null })
     });
     setScoreSaved(true);
     fetchLeaderboard();

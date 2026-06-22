@@ -61,7 +61,7 @@ export default function QuickSort() {
     await fetch(`${API}/leaderboard`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: playerName.trim(), game: "quick-sort", steps })
+      body: JSON.stringify({ name: playerName.trim(), game: "quick-sort", steps, join_code: localStorage.getItem("joinCode") || null })
     });
     setScoreSaved(true);
     fetchLeaderboard();

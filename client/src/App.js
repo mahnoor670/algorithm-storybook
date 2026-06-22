@@ -6,7 +6,7 @@ import SelectionSort from "./SelectionSort";
 import InsertionSort from "./InsertionSort";
 import MergeSort from "./MergeSort";
 import QuickSort from "./QuickSort";
-
+import Teacher from "./Teacher";
 
 export default function App() {
   return (
@@ -19,8 +19,7 @@ export default function App() {
         <Route path="/insertion-sort" element={<InsertionSort />} />
         <Route path="/merge-sort" element={<MergeSort />} />
         <Route path="/quick-sort" element={<QuickSort />} />
-
-        
+        <Route path="/teacher" element={<Teacher />} />
       </Routes>
     </BrowserRouter>
   );

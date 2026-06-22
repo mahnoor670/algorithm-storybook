@@ -55,7 +55,7 @@ export default function InsertionSort() {
     await fetch(`${API}/leaderboard`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: playerName.trim(), game: "insertion-sort", steps })
+      body: JSON.stringify({ name: playerName.trim(), game: "insertion-sort", steps, join_code: localStorage.getItem("joinCode") || null })
     });
     setScoreSaved(true);
     fetchLeaderboard();

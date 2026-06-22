@@ -1,4 +1,7 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+const API = "https://algorithm-storybook.onrender.com";
 
 const levels = [
   {
@@ -56,6 +59,46 @@ const levels = [
 
 export default function Menu() {
   const navigate = useNavigate();
+  const [joinCode, setJoinCode] = useState(localStorage.getItem("joinCode") || "");
+  const [studentName, setStudentName] = useState(localStorage.getItem("studentName") || "");
+  const [joinMessage, setJoinMessage] = useState("");
+  const [joinedClassName, setJoinedClassName] = useState(localStorage.getItem("joinedClassName") || "");
+
+  const handleJoinClass = async () => {
+    if (!studentName.trim() || !joinCode.trim()) {
+      setJoinMessage("Enter your name and a join code.");
+      return;
+    }
+    try {
+      const res = await fetch(`${API}/class/join`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: studentName.trim(), join_code: joinCode.trim().toUpperCase() })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("joinCode", joinCode.trim().toUpperCase());
+        localStorage.setItem("studentName", studentName.trim());
+        localStorage.setItem("joinedClassName", data.class_name);
+        setJoinedClassName(data.class_name);
+        setJoinMessage(`Joined ${data.class_name}! Your scores will now count toward your class.`);
+      } else {
+        setJoinMessage(data.error || "Couldn't join that class.");
+      }
+    } catch (err) {
+      setJoinMessage("Something went wrong. Try again.");
+    }
+  };
+
+  const handleLeaveClass = () => {
+    localStorage.removeItem("joinCode");
+    localStorage.removeItem("studentName");
+    localStorage.removeItem("joinedClassName");
+    setJoinCode("");
+    setStudentName("");
+    setJoinedClassName("");
+    setJoinMessage("");
+  };
 
   return (
     <div style={{
@@ -66,7 +109,7 @@ export default function Menu() {
     }}>
 
       {/* Header */}
-      <div style={{ textAlign: "center", marginBottom: "48px" }}>
+      <div style={{ textAlign: "center", marginBottom: "32px" }}>
         <h1 style={{
           fontSize: "3rem", margin: "0",
           color: "#13294B",
@@ -76,6 +119,51 @@ export default function Menu() {
           color: "#666", fontSize: "1.1rem",
           margin: "12px 0 0"
         }}>Learn algorithms by playing. No lectures required.</p>
+      </div>
+
+      {/* Join a Class */}
+      <div style={{
+        maxWidth: "500px", margin: "0 auto 40px", background: "white",
+        borderRadius: "16px", padding: "20px 24px", boxShadow: "0 4px 20px rgba(0,0,0,0.08)"
+      }}>
+        {joinedClassName ? (
+          <div style={{ textAlign: "center" }}>
+            <p style={{ margin: "0 0 8px", color: "#13294B", fontWeight: "bold" }}>
+              ✅ Playing as <span style={{ color: "#FF5F05" }}>{studentName}</span> in <span style={{ color: "#FF5F05" }}>{joinedClassName}</span>
+            </p>
+            <button onClick={handleLeaveClass} style={{
+              background: "#f0f0f0", color: "#13294B", border: "none", padding: "8px 16px",
+              borderRadius: "8px", fontSize: "0.85rem", cursor: "pointer"
+            }}>Leave Class</button>
+          </div>
+        ) : (
+          <>
+            <p style={{ margin: "0 0 12px", color: "#13294B", fontWeight: "bold", fontSize: "0.95rem" }}>
+              🎓 Join a Class (optional)
+            </p>
+            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={studentName}
+                onChange={e => setStudentName(e.target.value)}
+                style={{ flex: "1 1 140px", padding: "10px", borderRadius: "8px", border: "2px solid #ddd", fontSize: "0.9rem", fontFamily: "'Ubuntu', sans-serif" }}
+              />
+              <input
+                type="text"
+                placeholder="Join code"
+                value={joinCode}
+                onChange={e => setJoinCode(e.target.value)}
+                style={{ flex: "1 1 100px", padding: "10px", borderRadius: "8px", border: "2px solid #ddd", fontSize: "0.9rem", textTransform: "uppercase", fontFamily: "'Ubuntu', sans-serif" }}
+              />
+              <button onClick={handleJoinClass} style={{
+                background: "#FF5F05", color: "white", border: "none", padding: "10px 18px",
+                borderRadius: "8px", fontSize: "0.9rem", fontWeight: "bold", cursor: "pointer"
+              }}>Join</button>
+            </div>
+            {joinMessage && <p style={{ margin: "10px 0 0", fontSize: "0.85rem", color: "#666" }}>{joinMessage}</p>}
+          </>
+        )}
       </div>
 
       {/* Level cards */}
@@ -153,6 +241,15 @@ export default function Menu() {
             )}
           </div>
         ))}
+      </div>
+
+      {/* Teacher Portal link */}
+      <div style={{ textAlign: "center", marginTop: "48px" }}>
+        <button onClick={() => navigate("/teacher")} style={{
+          background: "transparent", color: "#13294B", border: "2px solid #13294B",
+          padding: "12px 28px", borderRadius: "12px", fontSize: "0.95rem", fontWeight: "bold",
+          cursor: "pointer"
+        }}>🍎 Teacher Portal</button>
       </div>
     </div>
   );
