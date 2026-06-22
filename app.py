@@ -30,6 +30,7 @@ class Score(db.Model):
     join_code = db.Column(db.String(6), nullable=True)
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 TOTAL_HOLES = 7
