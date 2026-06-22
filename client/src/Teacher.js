@@ -19,7 +19,7 @@ const styles = `
   }
   .teacher-input:focus {
     outline: none;
-    border-color: #FF5F05 !important;
+    border-color: #b4ebe7ff !important;
   }
 `;
 
@@ -87,21 +87,21 @@ export default function Teacher() {
       }}>
         <div style={{
           position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-          background: "linear-gradient(135deg, #13294B, #1a3a6b)", zIndex: 0
+          background: "#F0EEFF", zIndex: 0
         }} />
 
         <div style={{ zIndex: 10, width: "100%", maxWidth: "560px" }}>
           <h1 style={{ color: "#FF5F05", textAlign: "center", fontSize: "2.2rem", marginBottom: "4px" }}>
-            🍎 Teacher Portal
+            Teacher Portal
           </h1>
-          <p style={{ color: "white", textAlign: "center", marginBottom: "28px", opacity: 0.85 }}>
+          <p style={{ color: "#13294B", textAlign: "center", marginBottom: "28px", opacity: 0.75 }}>
             Create a class or view your students' progress
           </p>
 
           {mode === "choose" && (
             <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               <button onClick={() => setMode("create")} style={{
-                background: "#FF5F05", color: "white", border: "none", padding: "18px",
+                background: "#b4ebe7ff", color: "#13294B", border: "none", padding: "18px",
                 borderRadius: "14px", fontSize: "1.1rem", fontWeight: "bold", cursor: "pointer",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.3)"
               }}>+ Create a New Class</button>
@@ -109,9 +109,9 @@ export default function Teacher() {
                 background: "white", color: "#13294B", border: "none", padding: "18px",
                 borderRadius: "14px", fontSize: "1.1rem", fontWeight: "bold", cursor: "pointer",
                 boxShadow: "0 4px 14px rgba(0,0,0,0.3)"
-              }}>📊 View My Class Dashboard</button>
+              }}>View My Class Dashboard</button>
               <button onClick={() => navigate("/")} style={{
-                background: "transparent", color: "white", border: "2px solid rgba(255,255,255,0.4)",
+                background: "transparent", color: "#13294B", border: "2px solid rgba(19,41,75,0.3)",
                 padding: "14px", borderRadius: "14px", fontSize: "1rem", cursor: "pointer", marginTop: "8px"
               }}>← Back to Main Menu</button>
             </div>
@@ -123,7 +123,7 @@ export default function Teacher() {
               <input
                 className="teacher-input"
                 type="text"
-                placeholder="Your name"
+                placeholder="Teacher name"
                 value={teacherName}
                 onChange={e => setTeacherName(e.target.value)}
                 style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "2px solid #ddd", fontSize: "1rem", marginBottom: "12px", boxSizing: "border-box", fontFamily: "'Ubuntu', sans-serif" }}
@@ -131,7 +131,7 @@ export default function Teacher() {
               <input
                 className="teacher-input"
                 type="text"
-                placeholder="Class name (e.g. Period 3 CS)"
+                placeholder="Class name (e.g.  Period 7 AP CSA)"
                 value={className}
                 onChange={e => setClassName(e.target.value)}
                 style={{ width: "100%", padding: "12px", borderRadius: "10px", border: "2px solid #ddd", fontSize: "1rem", marginBottom: "12px", boxSizing: "border-box", fontFamily: "'Ubuntu', sans-serif" }}
@@ -150,7 +150,7 @@ export default function Teacher() {
 
           {mode === "create" && createdClass && (
             <div style={{ background: "white", borderRadius: "18px", padding: "28px", textAlign: "center", animation: "fadeIn 0.3s ease-out" }}>
-              <h2 style={{ color: "#2d8a1e", marginTop: 0 }}>Class Created! 🎉</h2>
+              <h2 style={{ color: "#2d8a1e", marginTop: 0 }}>Class Created</h2>
               <p style={{ color: "#13294B" }}>Share this join code with your students:</p>
               <div style={{
                 background: "#fff8f0", border: "3px dashed #FF5F05", borderRadius: "14px",

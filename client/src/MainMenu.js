@@ -129,7 +129,7 @@ export default function Menu() {
         {joinedClassName ? (
           <div style={{ textAlign: "center" }}>
             <p style={{ margin: "0 0 8px", color: "#13294B", fontWeight: "bold" }}>
-              ✅ Playing as <span style={{ color: "#FF5F05" }}>{studentName}</span> in <span style={{ color: "#FF5F05" }}>{joinedClassName}</span>
+              Playing as <span style={{ color: "#FF5F05" }}>{studentName}</span> in <span style={{ color: "#FF5F05" }}>{joinedClassName}</span>
             </p>
             <button onClick={handleLeaveClass} style={{
               background: "#f0f0f0", color: "#13294B", border: "none", padding: "8px 16px",
@@ -139,7 +139,7 @@ export default function Menu() {
         ) : (
           <>
             <p style={{ margin: "0 0 12px", color: "#13294B", fontWeight: "bold", fontSize: "0.95rem" }}>
-              🎓 Join a Class (optional)
+               Join a Class (optional)
             </p>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               <input
@@ -249,7 +249,7 @@ export default function Menu() {
           background: "transparent", color: "#13294B", border: "2px solid #13294B",
           padding: "12px 28px", borderRadius: "12px", fontSize: "0.95rem", fontWeight: "bold",
           cursor: "pointer"
-        }}>🍎 Teacher Portal</button>
+        }}>Teacher Portal</button>
       </div>
     </div>
   );
